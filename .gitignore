@@ -1,0 +1,30 @@
+# ================================
+# .gitignore 기본 템플릿입니다.
+# 팀별로 자유롭게 수정해서 사용하시면 됩니다.
+# ================================
+
+# === Node ===
+node_modules/
+dist/
+build/
+
+# === Environment ===
+.env
+.env.*
+
+# === Logs ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Editor directories ===
+.vscode/
+.idea/
+*.swp
+*.swo
