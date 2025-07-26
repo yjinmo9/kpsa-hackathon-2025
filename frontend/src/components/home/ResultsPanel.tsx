@@ -23,31 +23,34 @@ const RESULT_TABS = ["기술", "재무", "뉴스"] as const
 // 더미 데이터 구조
 const MOCK_STOCK_DATA = {
   company: {
-    name: "로켓헬스케어",
+    name: "알테오젠",
     code: "376900",
     industry: "바이오의약품",
-    marketCap: "50조원"
+    marketCap: "50조원",
+    price: "100,000",
+    change: "+15.2% YoY",
+    changeColor: "green"
   },
   technical: {
     title: "기술 분석",
-    description: "로켓헬스케어는 인공지능과 3D 바이오프린팅을 접목하여 환자 맞춤형 장기 및 조직재생 치료제, 치료용 세포, 바이오잉크, 의료장비를 종합적으로 개발하는 선도 기업입니다. 세포부터 장기 재생까지 전주기 R&D와 독보적인 융합기술, 맞춤형 의료솔루션 제공이 강점입니다.",
+    description: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요.",
     industries: [
       "세포기반치료제",
       "연구 및 생산장비",
-      "바이오스케 의약품"
+      "바이오소케 의약품"
     ],
     businessAreas: [
       {
         title: "파이프라인 요약",
-        content: "맞춤형 3D 바이오프린팅 장기 및 조직재생 솔루션과 자가세포 치료제, 다양한 생체재료 및 의료장비를 개발하고 있습니다."
+        content: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요."
       },
       {
         title: "주력상품/기술 상세",
-        content: "3D 바이오프린팅을 활용한 자가세포 기반 인공장기 및 조직 재건 기술과 고성능 바이오프린터, 바이오잉크, 치료용 세포, 신소재 생체재료, 연구 및 생산용 의료장비를 보유하고 있습니다."
+        content: "알테오젠은 주사제를 SC 제형으로 바꾸는 ALT-B4 플랫폼(Hybrozyme) 기술을 보유하고 있어요. 이 기술은 글로벌 제약사에 기술수출까지 이루어졌고, 이중 표적 항체·ADC 기술 등 다양한 항체공학 기술로도 해외 파트너십을 확대하고 있어요."
       },
       {
         title: "임상 단계 및 개발 현황",
-        content: "맞춤형 치료제, 신규 생체재료, 세포배양 관련 핵심 기술을 임상 및 연구 단계에서 개발 중이며, 관련 특허 출원과 인증절차를 진행하고 있습니다."
+        content: "주요 제품들은 글로벌 임상시험을 통해 효과와 안전성을 검증하고 있고, 일부는 해외 제약사에 기술수출도 했어요. 지금도 다양한 질병에 적용할 수 있는 신약 후보물질을 놓리는 중이에요."
       }
     ],
     chart: "차별점"
@@ -197,92 +200,96 @@ export function ResultsPanel({
       <div className="bg-gray-50 p-4 rounded-lg">
         <h4 className="font-medium mb-2">{MOCK_STOCK_DATA.technical.chart}</h4>
         <div className="text-sm text-gray-600">
-          <p>• 3D 바이오프린팅 기술과 AI 융합 플랫폼</p>
-          <p>• 환자 맞춤형 장기 및 조직재생 솔루션</p>
-          <p>• 세포부터 장기까지 전주기 R&D 역량</p>
-          <p>• 독보적인 바이오잉크 및 생체재료 기술</p>
+          <p>SC 제형 변환 플랫폼은 세계에서도 손꼽히는 기술이에요.</p>
         </div>
+      </div>
+
+      {/* 생명공학기술 분류코드 섹션 */}
+      <div className="bg-green-50 p-4 rounded-lg">
+        <h4 className="font-medium mb-3 text-green-800">생명공학기술 분류코드</h4>
+        <div className="flex flex-wrap gap-2">
+          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm border border-green-200">
+            항체공학기술
+          </span>
+          <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm border border-green-200">
+            치료용 항체 및 사이토카인제제
+          </span>
+        </div>
+        <p className="text-sm text-green-700 mt-2">면역세포를 특정 질병을 정확히 인식하고 치료하도록 돕는 기술</p>
       </div>
     </div>
   )
 
   const renderFinancialContent = () => (
     <div className="space-y-4">
-      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.financial.title}</h3>
+      <h3 className="font-semibold text-base mb-2">투자 성향별 참고 의견</h3>
       
-      {/* 주요 재무 지표 */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        {MOCK_STOCK_DATA.financial.mainMetrics.map((metric, index) => (
-          <div key={index} className={`p-3 rounded-lg ${getMetricColorClasses(metric.color)}`}>
-            <div className="text-xs text-gray-500">{metric.label}</div>
-            <div className="font-semibold text-lg">{metric.value}</div>
-            <div className={`text-xs ${metric.color === 'green' ? 'text-green-600' : 
-              metric.color === 'blue' ? 'text-blue-600' : 
-              metric.color === 'purple' ? 'text-purple-600' : 'text-orange-600'}`}>
-              {metric.change}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* 분기별 실적 */}
-      <div className="border border-gray-200 p-4 rounded-lg">
-        <h4 className="font-medium mb-3">분기별 매출 추이</h4>
-        <div className="space-y-2 text-sm">
-          {MOCK_STOCK_DATA.financial.quarterlyRevenue.map((quarter, index) => (
-            <div key={index} className="flex justify-between">
-              <span>{quarter.quarter}</span>
-              <span className="font-medium">{quarter.revenue}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 투자 계획 */}
+      {/* 투자 의견 */}
       <div className="bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-medium mb-2">향후 투자 계획</h4>
-        <div className="text-sm text-gray-600">
-          {MOCK_STOCK_DATA.financial.investmentPlan.map((plan, index) => (
-            <p key={index}>• {plan}</p>
-          ))}
-        </div>
+        <p className="text-sm text-gray-600">
+          신약 개발 성공을 기대하며 성장에 투자하고 싶은 분 주목! 해당 기업은 'R&D 중심 바이오텍'에 속해요. '임상 데이터와 기술이전 실적에 따라 주가가 크게 변동하기 위하며 단기간 성과가 불확실해 장기적 성장성이나 기술 가치에 베팅하는 형태입니다. R&D 비용이 많고 적자 지속 가능성도 염두하여 투자하세요
+        </p>
       </div>
 
-      {/* 밸류에이션 */}
-      <div className="grid grid-cols-3 gap-2">
-        {MOCK_STOCK_DATA.financial.valuation.map((val, index) => (
-          <div key={index} className="text-center p-2 bg-gray-50 rounded">
-            <div className="text-xs text-gray-500">{val.metric}</div>
-            <div className="font-semibold">{val.value}</div>
+      {/* 투자 지표 */}
+      <div className="bg-white p-4 rounded-lg border border-gray-200">
+        <h4 className="font-medium mb-3">투자 지표</h4>
+        <div className="grid grid-cols-5 gap-2 text-center">
+          <div>
+            <div className="text-xs text-gray-500 mb-1">시가총액</div>
+            <div className="font-medium">27.3조원</div>
           </div>
-        ))}
+          <div>
+            <div className="text-xs text-gray-500 mb-1">PBR</div>
+            <div className="font-medium">0.6배</div>
+          </div>
+          <div>
+            <div className="text-xs text-gray-500 mb-1">PER</div>
+            <div className="font-medium">6.6배</div>
+          </div>
+          <div>
+            <div className="text-xs text-gray-500 mb-1">PSR</div>
+            <div className="font-medium">0.5배</div>
+          </div>
+          <div>
+            <div className="text-xs text-gray-500 mb-1">ROE</div>
+            <div className="font-medium">9.6%</div>
+          </div>
+        </div>
       </div>
     </div>
   )
 
   const renderNewsContent = () => (
     <div className="space-y-4">
-      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.news.title}</h3>
+      <h3 className="font-semibold text-base mb-2">최근 주요 뉴스</h3>
       
       <div className="space-y-4">
-        {MOCK_STOCK_DATA.news.articles.map((article, index) => (
-          <div key={index} className={`border-l-4 border-${getSentimentColor(article.sentiment)}-500 pl-4 bg-${getSentimentColor(article.sentiment)}-50 p-3 rounded-r-lg`}>
-            <div className="font-medium text-sm">{article.title}</div>
-            <div className="text-xs text-gray-600 mt-1">{article.summary}</div>
-            <div className="text-xs text-gray-500 mt-2">{article.source} • {article.date}</div>
-          </div>
-        ))}
-      </div>
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
+          <div className="font-medium text-sm">알테오젠 2대주주 형인우 "키트루다SC 판매가 천기... 코스피 이전 긍정적"</div>
+          <div className="text-xs text-gray-600 mt-1">월 대표는 알테오젠 주식 27만주를 보유한 2대 주주다. 그의 보유분 액면분할시는 162만주로 보유하고 있다. 2위의 주식 가치는 지난 4일 종가 기준으로 1조...</div>
+          <div className="text-xs text-gray-500 mt-2">데일리안 • 3주 전</div>
+        </div>
 
-      {/* 뉴스 요약 */}
-      <div className="border border-gray-200 p-4 rounded-lg mt-4">
-        <h4 className="font-medium mb-2 text-gray-800">뉴스 동향 요약</h4>
-        <div className="text-sm text-gray-600 space-y-1">
-          <p>• <span className="text-green-600 font-medium">긍정적:</span> {MOCK_STOCK_DATA.news.summary.positive}</p>
-          <p>• <span className="text-blue-600 font-medium">중립적:</span> {MOCK_STOCK_DATA.news.summary.neutral}</p>
-          <p>• <span className="text-purple-600 font-medium">장기적:</span> {MOCK_STOCK_DATA.news.summary.longTerm}</p>
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
+          <div className="font-medium text-sm">알테오젠, 코스피 이전 기대감에 다시 '들썩'... 5%대 상승 [Why 바이오]</div>
+          <div className="text-xs text-gray-600 mt-1">이 곳사는 LG생명과학, 알테바이오젠테스 등에서 24년 이상 근무하며 FDA와 EMA로부터 총 7건의 승인 면역에 바이오시밀러 허가를 이끈 CMC 전문가다.</div>
+          <div className="text-xs text-gray-500 mt-2">머니투데이 • 3주 전</div>
+        </div>
+
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
+          <div className="font-medium text-sm">"코스닥 1위가 대전 회사?"알테오젠이 증명한 '한국 경제 지각변동'</div>
+          <div className="text-xs text-gray-600 mt-1">"코스닥 시총 1위 알테오젠 본사가 대전?" 대전 주식도 단연 대전의 알테오젠이다. 7월 2일 기준, 어려워 코스닥 시가총액 1위인 알테오젠은 시총 21...</div>
+          <div className="text-xs text-gray-500 mt-2">뉴스타파 • 3주 전</div>
+        </div>
+
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
+          <div className="font-medium text-sm">알테오젠 'ALT-B4' 폭 물질특허 등록... 특허소송에 미치는 영향은</div>
+          <div className="text-xs text-gray-600 mt-1">알테오젠(196170)과 바하마스 선박 회사무브리다의 'ALT-B4'의 물질 특허가 미국 특허청(USPTO) 등록이 결정되다 알테오젠 보사 및 연구소 전략...</div>
+          <div className="text-xs text-gray-500 mt-2">데일리안 • 3주 전</div>
         </div>
       </div>
+
     </div>
   )
 

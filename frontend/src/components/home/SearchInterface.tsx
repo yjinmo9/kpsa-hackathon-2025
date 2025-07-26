@@ -21,16 +21,35 @@ export function SearchInterface({
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col items-center justify-center h-full w-full"
+      className="relative flex flex-col items-center justify-center h-full w-full"
     >
-      <div className="w-full space-y-6">
-        <motion.p
-          className="text-center text-gray-300 text-sm"
+      {/* Background circles */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] rounded-full"
+          style={{ backgroundColor: 'rgba(172, 204, 96, 0.4)' }}
+        />
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full"
+          style={{ backgroundColor: 'rgba(172, 204, 96, 0.6)' }}
+        />
+        <div 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[24rem] h-[24rem] rounded-full"
+          style={{ backgroundColor: 'rgba(172, 204, 96, 0.8)' }}
+        />
+      </div>
+
+      <div className="relative z-10 w-full max-w-sm px-6 space-y-8">
+        <motion.div
+          className="text-center space-y-2"
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
         >
-          종목명, 기술명, 산업명을 검색해보세요
-        </motion.p>
+          <h2 className="text-lg font-medium text-gray-800 leading-relaxed">
+            기술부터 뉴스까지,<br />
+            바이오 핵심 정보만 모았어요
+          </h2>
+        </motion.div>
 
         <motion.form
           onSubmit={onSubmit}
@@ -38,12 +57,12 @@ export function SearchInterface({
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <Input
             type="text"
-            placeholder="종목명, 기술명, 산업명을 검색해보세요"
+            placeholder="종목명, 기술명을 검색해보세요"
             {...register("query")}
-            className="w-full bg-gray-800 border-gray-700 text-white placeholder-gray-400 pl-10 md:pl-12 py-3 md:py-4 lg:py-5 rounded-full focus:ring-2 focus:ring-white focus:border-transparent text-sm md:text-base lg:text-lg"
+            className="w-full bg-white border-none text-gray-800 placeholder-gray-500 pl-12 py-4 rounded-full shadow-sm focus:ring-2 focus:ring-green-300 focus:border-transparent text-base"
           />
         </motion.form>
       </div>

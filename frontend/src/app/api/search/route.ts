@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { NextRequest, NextResponse } from "next/server";
 import { OpenAI } from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
@@ -22,6 +23,14 @@ export async function POST(req: NextRequest) {
     const embedding = await openai.embeddings.create({
       model: "text-embedding-3-large",
       input: query,
+=======
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET(request: NextRequest) {
+    return NextResponse.json({ 
+        company: '알테오젠',
+        technology: ['이중표적 항체', '개량신약', 'PEGylation'],
+>>>>>>> Stashed changes
     });
 
     const queryEmbedding = embedding.data[0].embedding;

@@ -54,10 +54,6 @@ export class KISApi {
     );
   }
 
-  public setAccessToken(token: string): void {
-    this.accessToken = token;
-  }
-
   // === 주식 현재가 시세 ===
   async getStockPrice(stockCode: string): Promise<StockPriceResponse> {
     const response = await this.axiosInstance.get<StockPriceResponse>(
@@ -98,7 +94,7 @@ export class KISApi {
       `/uapi/domestic-stock/v1/quotations/search-info`,
       {
         params: {
-          PRDT_TYPE_CD: '300', // 300: 국내주식
+          PRDT_TYPE_CD: '300',
           PDNO: keyword,
         },
         headers: {
@@ -107,11 +103,6 @@ export class KISApi {
       }
     );
     return response.data;
-  }
-
-  // === 호환성을 위한 기존 메서드 (deprecated, searchStocks 사용 권장) ===
-  async getStockInfo(keyword: string): Promise<StockSearchResponse> {
-    return this.searchStocks(keyword);
   }
 }
 
