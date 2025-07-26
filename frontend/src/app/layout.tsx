@@ -70,7 +70,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${pretendard.variable} font-sans antialiased`}
+        className={`${pretendard.variable} font-sans antialiased bg-black`}
       >
         {children}
       </body>
