@@ -21,9 +21,9 @@ export function SearchInterface({
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex flex-col items-center justify-center px-6 h-full"
+      className="flex flex-col items-center justify-center h-full w-full"
     >
-      <div className="w-full max-w-sm space-y-6 -mt-20">
+      <div className="w-full space-y-6">
         <motion.p
           className="text-center text-gray-300 text-sm"
           exit={{ opacity: 0, y: -10 }}

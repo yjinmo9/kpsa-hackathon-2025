@@ -8,7 +8,7 @@ interface BottomNavigationProps {
   onTabChange: (tab: string) => void
 }
 
-const NAVIGATION_TABS = ["기술", "기업"] as const
+const NAVIGATION_TABS = ["기술","탐색","기업"] as const
 
 export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
   return (
@@ -26,7 +26,7 @@ export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationPro
             size="sm"
             onClick={() => onTabChange(tab)}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
-              activeTab === tab ? "bg-gray-600 text-white" : "text-gray-400 hover:text-white hover:bg-gray-700"
+              activeTab === tab ? "bg-primary text-white" : "text-gray-400 hover:text-white hover:bg-gray-700"
             }`}
           >
             {tab}

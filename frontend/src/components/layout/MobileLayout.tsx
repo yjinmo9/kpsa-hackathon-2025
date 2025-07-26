@@ -17,7 +17,7 @@ export function MobileLayout({ children, onLogoClick, ...props }: MobileLayoutPr
             BUYO
           </h1>
       </div>
-      <main className="flex-1 overflow-y-auto px-4 py-2">
+      <main className="flex-1 overflow-y-auto px-4 py-2 flex flex-col justify-center items-center">
         {children}
       </main>
     </div>
