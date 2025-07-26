@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import localFont from 'next/font/local'
 
-
-
+import { TooltipProvider } from "@/components/ui/tooltip";
 import QueryClientProvider from '@/provider/QueryClient';
 import "./globals.css";
 
@@ -73,9 +72,11 @@ export default function RootLayout({
       <body
         className={`${pretendard.variable} font-sans antialiased`}
       >
-        <QueryClientProvider>
-          {children}
-        </QueryClientProvider>
+        <TooltipProvider>
+          <QueryClientProvider>
+            {children}
+          </QueryClientProvider>
+        </TooltipProvider>
       </body>
     </html>
   );
