@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 
 
 
+import QueryClientProvider from '@/provider/QueryClient';
 import "./globals.css";
 
 const pretendard = localFont({
@@ -68,11 +69,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${pretendard.variable} font-sans antialiased bg-black`}
       >
-        {children}
+        <QueryClientProvider>
+          {children}
+        </QueryClientProvider>
       </body>
     </html>
   );
