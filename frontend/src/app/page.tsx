@@ -1,48 +1,86 @@
-'use client';
+"use client"
 
-import { MobileLayout } from '@/components/layout/MobileLayout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
-import { useState } from 'react';
+import type React from "react"
+import { useState } from "react"
+import { useForm, FormProvider } from "react-hook-form"
+import { AnimatePresence } from "framer-motion"
+import { MobileLayout } from "@/components/layout/MobileLayout"
+import { 
+  SearchInterface, 
+  SearchResults, 
+  BottomNavigation 
+} from "@/components/home"
+import { useSearchQuery } from "@/hooks"
 
-export default function Home() {
-  const [activeTab, setActiveTab] = useState("탐색")
-  const [searchQuery, setSearchQuery] = useState("")
+interface SearchFormData {
+  query: string
+}
+
+export default function BuyoSearchPage() {
+  const [activeTab, setActiveTab] = useState("기술")
+  const [selectedResultTab, setSelectedResultTab] = useState("기술")
+  const [showResults, setShowResults] = useState(false)
+
+  const searchMutation = useSearchQuery()
+  
+  const methods = useForm<SearchFormData>({
+    defaultValues: {
+      query: ""
+    }
+  })
+
+  const { 
+    handleSubmit,
+    reset,
+    formState: { isSubmitting }
+  } = methods
+
+  const onSubmit = async (data: SearchFormData) => {
+    if (data.query.trim()) {
+      try {
+        await searchMutation.mutateAsync({ query: data.query })
+        setShowResults(true)
+      } catch (error) {
+        console.error('Search failed:', error)
+      }
+    }
+  }
+
+  const handleLogoClick = () => {
+    setActiveTab("기술")
+    reset() 
+    setShowResults(false)
+    setSelectedResultTab("기술")
+    searchMutation.reset() 
+  }
 
   return (
-    <MobileLayout type="home">
-      <div className="w-full h-full flex flex-col justify-center items-center gap-4 md:gap-8 px-4 md:px-8 pb-30">
-        <p className="text-center text-gray-300 text-sm md:text-lg lg:text-xl">종목명, 기술명, 산업명을 검색해보세요</p>
-        <div className="relative w-full max-w-md md:max-w-2xl lg:max-w-4xl">
-          <Search className="absolute left-3 md:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 md:w-6 md:h-6" />
-          <Input
-            type="text"
-            placeholder="종목명, 기술명, 산업명을 검색해보세요"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-gray-800 border-gray-700 text-white placeholder-gray-400 pl-10 md:pl-12 py-3 md:py-4 lg:py-5 rounded-full focus:ring-2 focus:ring-white focus:border-transparent text-sm md:text-base lg:text-lg"
-          />
-        </div>
-      </div>
+    <FormProvider {...methods}>
+      <MobileLayout type="home" onLogoClick={handleLogoClick}>  
+        <AnimatePresence mode="wait">
+          {!showResults ? (
+            <SearchInterface
+              onSubmit={handleSubmit(onSubmit)}
+            />
+          ) : (
+            <SearchResults
+              searchData={searchMutation.data}
+              selectedResultTab={selectedResultTab}
+              onResultTabChange={setSelectedResultTab}
+            />
+          )}
+        </AnimatePresence>
 
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2">
-        <div className="flex bg-gray-800 rounded-full p-1 md:p-2">
-          {["기술", "기업"].map((tab) => (
-            <Button
-              key={tab}
-              variant={activeTab === tab ? "default" : "ghost"}
-              size="sm"
-              onClick={() => setActiveTab(tab)}
-              className={`px-6 md:px-8 lg:px-10 py-2 md:py-3 rounded-full text-sm md:text-base lg:text-lg font-medium transition-all ${
-                activeTab === tab ? "bg-gray-600 text-white" : "text-gray-400 hover:text-white hover:bg-gray-700"
-              }`}
-            >
-              {tab}
-            </Button>
-          ))}
-        </div>
-      </div>
-    </MobileLayout>
-  );
+        
+        <AnimatePresence>
+          {!showResults && (
+            <BottomNavigation
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          )}
+        </AnimatePresence>
+      </MobileLayout>
+    </FormProvider>
+  )
 }
