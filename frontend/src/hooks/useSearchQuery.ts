@@ -1,5 +1,7 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query'
 
+import axios from "axios";
+
 interface SearchResponse {
   company: string
   technology: string[]
@@ -8,6 +10,7 @@ interface SearchResponse {
 interface SearchMutationVariables {
   query: string
 }
+
 
 // Constants and utility functions defined at the top
 const SEARCH_API_URL = '/api/search'
@@ -35,11 +38,11 @@ const searchFetcher = async (url: string): Promise<SearchResponse> => {
 /**
  * Custom hook to perform search mutation
  */
-export function useSearchQuery(): UseMutationResult<SearchResponse, Error, SearchMutationVariables> {
-  return useMutation({
-    mutationFn: async ({ query }: SearchMutationVariables): Promise<SearchResponse> => {
-      const url = createSearchUrl(query)
-      return searchFetcher(url)
+export function useSearchQuery() {
+  return useMutation<SearchResponse, Error, SearchMutationVariables>({
+    mutationFn: async ({ query }) => {
+      const res = await axios.post("/api/search", { query })
+      return res.data
     },
     retry: 1,
   })
