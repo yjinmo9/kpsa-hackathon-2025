@@ -20,6 +20,136 @@ interface ResultsPanelProps {
 
 const RESULT_TABS = ["기술", "재무", "뉴스"] as const
 
+// 더미 데이터 구조
+const MOCK_STOCK_DATA = {
+  company: {
+    name: "로켓헬스케어",
+    code: "376900",
+    industry: "바이오의약품",
+    marketCap: "50조원"
+  },
+  technical: {
+    title: "기술 분석",
+    description: "로켓헬스케어는 인공지능과 3D 바이오프린팅을 접목하여 환자 맞춤형 장기 및 조직재생 치료제, 치료용 세포, 바이오잉크, 의료장비를 종합적으로 개발하는 선도 기업입니다. 세포부터 장기 재생까지 전주기 R&D와 독보적인 융합기술, 맞춤형 의료솔루션 제공이 강점입니다.",
+    industries: [
+      "세포기반치료제",
+      "연구 및 생산장비",
+      "바이오스케 의약품"
+    ],
+    businessAreas: [
+      {
+        title: "파이프라인 요약",
+        content: "맞춤형 3D 바이오프린팅 장기 및 조직재생 솔루션과 자가세포 치료제, 다양한 생체재료 및 의료장비를 개발하고 있습니다."
+      },
+      {
+        title: "주력상품/기술 상세",
+        content: "3D 바이오프린팅을 활용한 자가세포 기반 인공장기 및 조직 재건 기술과 고성능 바이오프린터, 바이오잉크, 치료용 세포, 신소재 생체재료, 연구 및 생산용 의료장비를 보유하고 있습니다."
+      },
+      {
+        title: "임상 단계 및 개발 현황",
+        content: "맞춤형 치료제, 신규 생체재료, 세포배양 관련 핵심 기술을 임상 및 연구 단계에서 개발 중이며, 관련 특허 출원과 인증절차를 진행하고 있습니다."
+      }
+    ],
+    chart: "차별점"
+  },
+  financial: {
+    title: "재무 분석",
+    mainMetrics: [
+      { label: "2023년 매출", value: "6.1조원", change: "+15.2% YoY", color: "green" },
+      { label: "영업이익", value: "2.3조원", change: "+22.8% YoY", color: "blue" },
+      { label: "영업이익률", value: "37.7%", change: "업계 최고 수준", color: "purple" },
+      { label: "부채비율", value: "12.3%", change: "매우 안정적", color: "orange" }
+    ],
+    quarterlyRevenue: [
+      { quarter: "2023 Q4", revenue: "1.68조원" },
+      { quarter: "2023 Q3", revenue: "1.52조원" },
+      { quarter: "2023 Q2", revenue: "1.45조원" },
+      { quarter: "2023 Q1", revenue: "1.42조원" }
+    ],
+    investmentPlan: [
+      "Plant 5 건설: 2025년 완공 예정 (2조원 투자)",
+      "해외 생산기지 확장: 미국, 유럽 진출",
+      "차세대 바이오 기술 개발: 500억원 투자"
+    ],
+    valuation: [
+      { metric: "PER", value: "28.5" },
+      { metric: "PBR", value: "4.2" },
+      { metric: "ROE", value: "15.8%" }
+    ]
+  },
+  news: {
+    title: "최신 뉴스",
+    articles: [
+      {
+        title: "Plant 5 건설 착공, 2025년 완공 예정",
+        summary: "15,000L 바이오리액터 4기 설치로 생산능력 2배 확대",
+        source: "매일경제",
+        date: "2024.01.15",
+        sentiment: "positive"
+      },
+      {
+        title: "글로벌 빅파마와 5년 장기계약 체결",
+        summary: "연간 최대 8000억원 규모, 항암제 생산 계약",
+        source: "조선일보",
+        date: "2024.01.12",
+        sentiment: "positive"
+      },
+      {
+        title: "FDA 승인 바이오시밀러 생산 개시",
+        summary: "국내 최초 자가면역질환 치료제 바이오시밀러 생산",
+        source: "한국경제",
+        date: "2024.01.10",
+        sentiment: "positive"
+      },
+      {
+        title: "4분기 실적 발표 임박, 시장 관심 집중",
+        summary: "애널리스트들 평균 목표가 120만원으로 상향 조정",
+        source: "이투데이",
+        date: "2024.01.08",
+        sentiment: "neutral"
+      },
+      {
+        title: "원자재 가격 상승으로 원가 부담 증가",
+        summary: "하지만 높은 수익성으로 영향 제한적일 전망",
+        source: "서울경제",
+        date: "2024.01.05",
+        sentiment: "caution"
+      },
+      {
+        title: "ESG 경영 강화, 탄소중립 로드맵 발표",
+        summary: "2030년까지 탄소배출 50% 감축 목표 설정",
+        source: "뉴스1",
+        date: "2024.01.03",
+        sentiment: "neutral"
+      }
+    ],
+    summary: {
+      positive: "대규모 투자 및 장기계약으로 성장 모멘텀 지속",
+      neutral: "실적 발표 대기, 원자재 가격 상승 모니터링 필요",
+      longTerm: "ESG 경영 및 지속가능성 강화"
+    }
+  }
+}
+
+const getSentimentColor = (sentiment: string) => {
+  switch (sentiment) {
+    case "positive": return "green"
+    case "neutral": return "blue"
+    case "caution": return "orange"
+    default: return "gray"
+  }
+}
+
+const getMetricColorClasses = (color: string) => {
+  switch (color) {
+    case "green": return "bg-green-50 text-green-600"
+    case "blue": return "bg-blue-50 text-blue-600"
+    case "purple": return "bg-purple-50 text-purple-600"
+    case "orange": return "bg-orange-50 text-orange-600"
+    default: return "bg-gray-50 text-gray-600"
+  }
+}
+
 export function ResultsPanel({ 
   selectedTab, 
   onTabChange, 
@@ -32,6 +162,129 @@ export function ResultsPanel({
     setInternalOpen(open)
     onOpenChange?.(open)
   }
+
+  const renderTechnicalContent = () => (
+    <div className="space-y-4">
+      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.company.name} ({MOCK_STOCK_DATA.company.code})</h3>
+      <p className="text-sm text-gray-700">{MOCK_STOCK_DATA.technical.description}</p>
+      
+      {/* 산업군 */}
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <h4 className="font-medium mb-3 text-blue-800">산업군</h4>
+        <div className="flex flex-wrap gap-2">
+          {MOCK_STOCK_DATA.technical.industries.map((industry, index) => (
+            <span 
+              key={index} 
+              className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm border border-blue-200"
+            >
+              {industry}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* 사업 영역 */}
+      <div className="space-y-4">
+        {MOCK_STOCK_DATA.technical.businessAreas.map((area, index) => (
+          <div key={index} className="border border-gray-200 p-4 rounded-lg">
+            <h4 className="font-medium mb-2 text-gray-800">{area.title}</h4>
+            <p className="text-sm text-gray-600">{area.content}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* 차별점 섹션 */}
+      <div className="bg-gray-50 p-4 rounded-lg">
+        <h4 className="font-medium mb-2">{MOCK_STOCK_DATA.technical.chart}</h4>
+        <div className="text-sm text-gray-600">
+          <p>• 3D 바이오프린팅 기술과 AI 융합 플랫폼</p>
+          <p>• 환자 맞춤형 장기 및 조직재생 솔루션</p>
+          <p>• 세포부터 장기까지 전주기 R&D 역량</p>
+          <p>• 독보적인 바이오잉크 및 생체재료 기술</p>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderFinancialContent = () => (
+    <div className="space-y-4">
+      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.financial.title}</h3>
+      
+      {/* 주요 재무 지표 */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {MOCK_STOCK_DATA.financial.mainMetrics.map((metric, index) => (
+          <div key={index} className={`p-3 rounded-lg ${getMetricColorClasses(metric.color)}`}>
+            <div className="text-xs text-gray-500">{metric.label}</div>
+            <div className="font-semibold text-lg">{metric.value}</div>
+            <div className={`text-xs ${metric.color === 'green' ? 'text-green-600' : 
+              metric.color === 'blue' ? 'text-blue-600' : 
+              metric.color === 'purple' ? 'text-purple-600' : 'text-orange-600'}`}>
+              {metric.change}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 분기별 실적 */}
+      <div className="border border-gray-200 p-4 rounded-lg">
+        <h4 className="font-medium mb-3">분기별 매출 추이</h4>
+        <div className="space-y-2 text-sm">
+          {MOCK_STOCK_DATA.financial.quarterlyRevenue.map((quarter, index) => (
+            <div key={index} className="flex justify-between">
+              <span>{quarter.quarter}</span>
+              <span className="font-medium">{quarter.revenue}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 투자 계획 */}
+      <div className="bg-gray-50 p-4 rounded-lg">
+        <h4 className="font-medium mb-2">향후 투자 계획</h4>
+        <div className="text-sm text-gray-600">
+          {MOCK_STOCK_DATA.financial.investmentPlan.map((plan, index) => (
+            <p key={index}>• {plan}</p>
+          ))}
+        </div>
+      </div>
+
+      {/* 밸류에이션 */}
+      <div className="grid grid-cols-3 gap-2">
+        {MOCK_STOCK_DATA.financial.valuation.map((val, index) => (
+          <div key={index} className="text-center p-2 bg-gray-50 rounded">
+            <div className="text-xs text-gray-500">{val.metric}</div>
+            <div className="font-semibold">{val.value}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+
+  const renderNewsContent = () => (
+    <div className="space-y-4">
+      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.news.title}</h3>
+      
+      <div className="space-y-4">
+        {MOCK_STOCK_DATA.news.articles.map((article, index) => (
+          <div key={index} className={`border-l-4 border-${getSentimentColor(article.sentiment)}-500 pl-4 bg-${getSentimentColor(article.sentiment)}-50 p-3 rounded-r-lg`}>
+            <div className="font-medium text-sm">{article.title}</div>
+            <div className="text-xs text-gray-600 mt-1">{article.summary}</div>
+            <div className="text-xs text-gray-500 mt-2">{article.source} • {article.date}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 뉴스 요약 */}
+      <div className="border border-gray-200 p-4 rounded-lg mt-4">
+        <h4 className="font-medium mb-2 text-gray-800">뉴스 동향 요약</h4>
+        <div className="text-sm text-gray-600 space-y-1">
+          <p>• <span className="text-green-600 font-medium">긍정적:</span> {MOCK_STOCK_DATA.news.summary.positive}</p>
+          <p>• <span className="text-blue-600 font-medium">중립적:</span> {MOCK_STOCK_DATA.news.summary.neutral}</p>
+          <p>• <span className="text-purple-600 font-medium">장기적:</span> {MOCK_STOCK_DATA.news.summary.longTerm}</p>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <Drawer open={internalOpen} onOpenChange={handleOpenChange}>
@@ -57,7 +310,7 @@ export function ResultsPanel({
       <DrawerContent className="h-[80vh]">
         <DrawerHeader>
           <DrawerTitle className="text-center text-lg font-semibold">
-            검색 결과
+            {MOCK_STOCK_DATA.company.name} 검색 결과
           </DrawerTitle>
         </DrawerHeader>
         
@@ -72,7 +325,7 @@ export function ResultsPanel({
                 onClick={() => onTabChange(tab)}
                 className={`flex-1 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedTab === tab
-                    ? "bg-gray-800 text-white shadow-sm"
+                    ? "bg-primary text-white shadow-sm"
                     : "text-gray-600 hover:text-gray-800 hover:bg-gray-200"
                 }`}
               >
@@ -84,221 +337,9 @@ export function ResultsPanel({
           {/* Content area */}
           <div className="flex-1 overflow-auto">
             <div className="text-gray-800 text-sm">
-              {selectedTab === "요약" && (
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-base mb-2">삼성바이오로직스 요약</h3>
-                  <p>바이오의약품 생산 전문 기업으로, 글로벌 CMO(Contract Manufacturing Organization) 시장에서 선도적 위치를 차지하고 있습니다.</p>
-                  <div className="grid grid-cols-2 gap-4 mt-4">
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">시가총액</div>
-                      <div className="font-semibold">약 50조원</div>
-                    </div>
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">업종</div>
-                      <div className="font-semibold">바이오의약품</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {selectedTab === "기술" && (
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-base mb-2">기술 분석</h3>
-                  <p>최첨단 바이오리액터 기술과 정제 공정 기술을 보유하고 있으며, 글로벌 제약회사들의 신약 생산을 담당하고 있습니다.</p>
-                  
-                  {/* 핵심 기술 */}
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-3 text-blue-800">핵심 기술 역량</h4>
-                    <ul className="space-y-2">
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span>15,000L 대용량 바이오리액터 운영 (Plant 4)</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span>단일클론항체 생산 전문 기술</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span>연속 정제 공정 (Continuous Processing)</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <span>완전 자동화 생산 시스템</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* 기술 지표 */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">연간 생산 능력</div>
-                      <div className="font-semibold text-lg">370,000L</div>
-                    </div>
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">생산 수율</div>
-                      <div className="font-semibold text-lg">95%+</div>
-                    </div>
-                  </div>
-
-                  {/* R&D 투자 */}
-                  <div className="border border-gray-200 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">R&D 투자 현황</h4>
-                    <div className="text-sm text-gray-600">
-                      <p>• 2023년 R&D 투자: 약 500억원 (매출 대비 8.2%)</p>
-                      <p>• 특허 보유: 국내외 120건</p>
-                      <p>• 차세대 바이오리액터 기술 개발 중</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {selectedTab === "재무" && (
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-base mb-2">재무 분석</h3>
-                  
-                  {/* 주요 재무 지표 */}
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    <div className="bg-green-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">2023년 매출</div>
-                      <div className="font-semibold text-lg">6.1조원</div>
-                      <div className="text-xs text-green-600">+15.2% YoY</div>
-                    </div>
-                    <div className="bg-blue-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">영업이익</div>
-                      <div className="font-semibold text-lg">2.3조원</div>
-                      <div className="text-xs text-blue-600">+22.8% YoY</div>
-                    </div>
-                    <div className="bg-purple-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">영업이익률</div>
-                      <div className="font-semibold text-lg">37.7%</div>
-                      <div className="text-xs text-purple-600">업계 최고 수준</div>
-                    </div>
-                    <div className="bg-orange-50 p-3 rounded-lg">
-                      <div className="text-xs text-gray-500">부채비율</div>
-                      <div className="font-semibold text-lg">12.3%</div>
-                      <div className="text-xs text-orange-600">매우 안정적</div>
-                    </div>
-                  </div>
-
-                  {/* 분기별 실적 */}
-                  <div className="border border-gray-200 p-4 rounded-lg">
-                    <h4 className="font-medium mb-3">분기별 매출 추이</h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span>2023 Q4</span>
-                        <span className="font-medium">1.68조원</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>2023 Q3</span>
-                        <span className="font-medium">1.52조원</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>2023 Q2</span>
-                        <span className="font-medium">1.45조원</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>2023 Q1</span>
-                        <span className="font-medium">1.42조원</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 투자 계획 */}
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <h4 className="font-medium mb-2">향후 투자 계획</h4>
-                    <div className="text-sm text-gray-600">
-                      <p>• Plant 5 건설: 2025년 완공 예정 (2조원 투자)</p>
-                      <p>• 해외 생산기지 확장: 미국, 유럽 진출</p>
-                      <p>• 차세대 바이오 기술 개발: 500억원 투자</p>
-                    </div>
-                  </div>
-
-                  {/* 밸류에이션 */}
-                  <div className="grid grid-cols-3 gap-2">
-                    <div className="text-center p-2 bg-gray-50 rounded">
-                      <div className="text-xs text-gray-500">PER</div>
-                      <div className="font-semibold">28.5</div>
-                    </div>
-                    <div className="text-center p-2 bg-gray-50 rounded">
-                      <div className="text-xs text-gray-500">PBR</div>
-                      <div className="font-semibold">4.2</div>
-                    </div>
-                    <div className="text-center p-2 bg-gray-50 rounded">
-                      <div className="text-xs text-gray-500">ROE</div>
-                      <div className="font-semibold">15.8%</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              
-              {selectedTab === "뉴스" && (
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-base mb-2">최신 뉴스</h3>
-                  
-                  <div className="space-y-4">
-                    {/* 긍정적 뉴스 */}
-                    <div className="border-l-4 border-green-500 pl-4 bg-green-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">Plant 5 건설 착공, 2025년 완공 예정</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        15,000L 바이오리액터 4기 설치로 생산능력 2배 확대
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">매일경제 • 2024.01.15</div>
-                    </div>
-
-                    <div className="border-l-4 border-blue-500 pl-4 bg-blue-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">글로벌 빅파마와 5년 장기계약 체결</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        연간 최대 8000억원 규모, 항암제 생산 계약
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">조선일보 • 2024.01.12</div>
-                    </div>
-
-                    <div className="border-l-4 border-purple-500 pl-4 bg-purple-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">FDA 승인 바이오시밀러 생산 개시</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        국내 최초 자가면역질환 치료제 바이오시밀러 생산
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">한국경제 • 2024.01.10</div>
-                    </div>
-
-                    {/* 중립적/주의 뉴스 */}
-                    <div className="border-l-4 border-orange-500 pl-4 bg-orange-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">4분기 실적 발표 임박, 시장 관심 집중</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        애널리스트들 평균 목표가 120만원으로 상향 조정
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">이투데이 • 2024.01.08</div>
-                    </div>
-
-                    <div className="border-l-4 border-yellow-500 pl-4 bg-yellow-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">원자재 가격 상승으로 원가 부담 증가</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        하지만 높은 수익성으로 영향 제한적일 전망
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">서울경제 • 2024.01.05</div>
-                    </div>
-
-                    <div className="border-l-4 border-indigo-500 pl-4 bg-indigo-50 p-3 rounded-r-lg">
-                      <div className="font-medium text-sm">ESG 경영 강화, 탄소중립 로드맵 발표</div>
-                      <div className="text-xs text-gray-600 mt-1">
-                        2030년까지 탄소배출 50% 감축 목표 설정
-                      </div>
-                      <div className="text-xs text-gray-500 mt-2">뉴스1 • 2024.01.03</div>
-                    </div>
-                  </div>
-
-                  {/* 뉴스 요약 */}
-                  <div className="border border-gray-200 p-4 rounded-lg mt-4">
-                    <h4 className="font-medium mb-2 text-gray-800">뉴스 동향 요약</h4>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      <p>• <span className="text-green-600 font-medium">긍정적:</span> 대규모 투자 및 장기계약으로 성장 모멘텀 지속</p>
-                      <p>• <span className="text-blue-600 font-medium">중립적:</span> 실적 발표 대기, 원자재 가격 상승 모니터링 필요</p>
-                      <p>• <span className="text-purple-600 font-medium">장기적:</span> ESG 경영 및 지속가능성 강화</p>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {selectedTab === "기술" && renderTechnicalContent()}
+              {selectedTab === "재무" && renderFinancialContent()}
+              {selectedTab === "뉴스" && renderNewsContent()}
             </div>
           </div>
         </div>

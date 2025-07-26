@@ -33,7 +33,6 @@ export default function BuyoSearchPage() {
   const { 
     handleSubmit,
     reset,
-    formState: { isSubmitting }
   } = methods
 
   const onSubmit = async (data: SearchFormData) => {
@@ -108,10 +107,26 @@ export default function BuyoSearchPage() {
                 <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
                   <span className="text-2xl">🏢</span>
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800">기업 정보</h2>
+                <h2 className="text-xl font-semibold text-gray-800">기업 분석</h2>
                 <p className="text-gray-600 text-sm leading-relaxed">
-                  기업의 재무 정보와 실적을<br />
-                  한눈에 확인할 수 있습니다.
+                  기업의 재무상태와 경영 정보를<br />
+                  분석하여 투자 결정을 도와드립니다.
+                </p>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* 산업 탭 */}
+          <TabsContent value="산업" className="flex-1 data-[state=inactive]:hidden">
+            <div className="flex flex-col items-center justify-center h-full min-h-96 px-6">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 mx-auto bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-2xl">🏭</span>
+                </div>
+                <h2 className="text-xl font-semibold text-gray-800">산업 분석</h2>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  다양한 산업군의 동향과 전망을<br />
+                  분석하여 섹터별 투자 기회를 제공합니다.
                 </p>
               </div>
             </div>

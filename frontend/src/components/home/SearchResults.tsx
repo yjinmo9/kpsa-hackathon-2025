@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState, useMemo } from "react"
 import { BubbleVisualization } from "./BubbleVisualization"
 import { ResultsPanel } from "./ResultsPanel"
+import StockInfo from "./StockInfo"
 
 export interface BubbleData {
   id: number
@@ -44,9 +45,9 @@ export function SearchResults({
       transition={{ duration: 0.6, delay: 0.2 }}
       className="flex flex-col h-full relative"
     >
+      {isDrawerOpen && <StockInfo stockId={"068270"} />}
       <BubbleVisualization 
-        searchData={searchData} 
-        
+        searchData={searchData}         
       />
       
       <ResultsPanel 
