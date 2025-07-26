@@ -10,6 +10,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { useState } from "react"
+import { SmartTooltipText } from "./SmartTooltipText"
 
 interface ResultsPanelProps {
   selectedTab: string
@@ -33,7 +34,7 @@ const MOCK_STOCK_DATA = {
   },
   technical: {
     title: "기술 분석",
-    description: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요.",
+    description: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러 ), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요.",
     industries: [
       "세포기반치료제",
       "연구 및 생산장비",
@@ -42,7 +43,7 @@ const MOCK_STOCK_DATA = {
     businessAreas: [
       {
         title: "파이프라인 요약",
-        content: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요."
+        content: "알테오젠은 항암제, 성장호르몬 치료제, 면역질환 항체치료제 등 다양한 파이프라인을 갖고 있어요. 예를 들어 헬즈마브(헤르셉틴 바이오시밀러 ), 지속형 성장호르몬, ADC 기반신약, 그리고 SC제형으로 바꾼 ALT-B4 등이 있어요."
       },
       {
         title: "주력상품/기술 상세",
@@ -134,25 +135,6 @@ const MOCK_STOCK_DATA = {
   }
 }
 
-const getSentimentColor = (sentiment: string) => {
-  switch (sentiment) {
-    case "positive": return "green"
-    case "neutral": return "blue"
-    case "caution": return "orange"
-    default: return "gray"
-  }
-}
-
-const getMetricColorClasses = (color: string) => {
-  switch (color) {
-    case "green": return "bg-green-50 text-green-600"
-    case "blue": return "bg-blue-50 text-blue-600"
-    case "purple": return "bg-purple-50 text-purple-600"
-    case "orange": return "bg-orange-50 text-orange-600"
-    default: return "bg-gray-50 text-gray-600"
-  }
-}
-
 export function ResultsPanel({ 
   selectedTab, 
   onTabChange, 
@@ -167,13 +149,15 @@ export function ResultsPanel({
   }
 
   const renderTechnicalContent = () => (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-base mb-2">{MOCK_STOCK_DATA.company.name} ({MOCK_STOCK_DATA.company.code})</h3>
-      <p className="text-sm text-gray-700">{MOCK_STOCK_DATA.technical.description}</p>
+    <div className="space-y-6">
+      <div className="space-y-3">
+        <h3 className="font-semibold text-base">{MOCK_STOCK_DATA.company.name} ({MOCK_STOCK_DATA.company.code})</h3>
+        <SmartTooltipText className="text-sm text-gray-700 leading-relaxed">{MOCK_STOCK_DATA.technical.description}</SmartTooltipText>
+      </div>
       
       {/* 산업군 */}
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <h4 className="font-medium mb-3 text-blue-800">산업군</h4>
+      <div className="bg-blue-50 p-4 rounded-lg space-y-3">
+        <h4 className="font-medium text-blue-800">산업군</h4>
         <div className="flex flex-wrap gap-2">
           {MOCK_STOCK_DATA.technical.industries.map((industry, index) => (
             <span 
@@ -189,24 +173,22 @@ export function ResultsPanel({
       {/* 사업 영역 */}
       <div className="space-y-4">
         {MOCK_STOCK_DATA.technical.businessAreas.map((area, index) => (
-          <div key={index} className="border border-gray-200 p-4 rounded-lg">
-            <h4 className="font-medium mb-2 text-gray-800">{area.title}</h4>
-            <p className="text-sm text-gray-600">{area.content}</p>
+          <div key={index} className="border border-gray-200 p-4 rounded-lg space-y-3">
+            <h4 className="font-medium text-gray-800">{area.title}</h4>
+            <SmartTooltipText className="text-sm text-gray-600 leading-relaxed">{area.content}</SmartTooltipText>
           </div>
         ))}
       </div>
 
       {/* 차별점 섹션 */}
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <h4 className="font-medium mb-2">{MOCK_STOCK_DATA.technical.chart}</h4>
-        <div className="text-sm text-gray-600">
-          <p>SC 제형 변환 플랫폼은 세계에서도 손꼽히는 기술이에요.</p>
-        </div>
+      <div className="bg-gray-50 p-4 rounded-lg space-y-3">
+        <h4 className="font-medium">{MOCK_STOCK_DATA.technical.chart}</h4>
+        <SmartTooltipText className="text-sm text-gray-600 leading-relaxed">SC 제형 변환 플랫폼은 세계에서도 손꼽히는 기술이에요.</SmartTooltipText>
       </div>
 
       {/* 생명공학기술 분류코드 섹션 */}
-      <div className="bg-green-50 p-4 rounded-lg">
-        <h4 className="font-medium mb-3 text-green-800">생명공학기술 분류코드</h4>
+      <div className="bg-green-50 p-4 rounded-lg space-y-3">
+        <h4 className="font-medium text-green-800">생명공학기술 분류코드</h4>
         <div className="flex flex-wrap gap-2">
           <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm border border-green-200">
             항체공학기술
@@ -215,45 +197,47 @@ export function ResultsPanel({
             치료용 항체 및 사이토카인제제
           </span>
         </div>
-        <p className="text-sm text-green-700 mt-2">면역세포를 특정 질병을 정확히 인식하고 치료하도록 돕는 기술</p>
+        <SmartTooltipText className="text-sm text-green-700 leading-relaxed">면역세포를 특정 질병을 정확히 인식하고 치료하도록 돕는 기술</SmartTooltipText>
       </div>
     </div>
   )
 
   const renderFinancialContent = () => (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-base mb-2">투자 성향별 참고 의견</h3>
-      
-      {/* 투자 의견 */}
-      <div className="bg-gray-50 p-4 rounded-lg">
-        <p className="text-sm text-gray-600">
-          신약 개발 성공을 기대하며 성장에 투자하고 싶은 분 주목! 해당 기업은 'R&D 중심 바이오텍'에 속해요. '임상 데이터와 기술이전 실적에 따라 주가가 크게 변동하기 위하며 단기간 성과가 불확실해 장기적 성장성이나 기술 가치에 베팅하는 형태입니다. R&D 비용이 많고 적자 지속 가능성도 염두하여 투자하세요
-        </p>
+    <div className="space-y-6">
+      <div className="space-y-3">
+        <h3 className="font-semibold text-base">투자 성향별 참고 의견</h3>
+        
+        {/* 투자 의견 */}
+        <div className="bg-gray-50 p-4 rounded-lg">
+          <SmartTooltipText className="text-sm text-gray-600 leading-relaxed">
+            신약 개발 성공을 기대하며 성장에 투자하고 싶은 분 주목! 해당 기업은 'R&D 중심 바이오텍'에 속해요. 임상 데이터와 기술이전 실적에 따라 주가가 크게 변동하기 위하며 단기간 성과가 불확실해 장기적 성장성이나 기술 가치에 베팅하는 형태입니다. R&D 비용이 많고 적자 지속 가능성도 염두하여 투자하세요
+          </SmartTooltipText>
+        </div>
       </div>
 
       {/* 투자 지표 */}
-      <div className="bg-white p-4 rounded-lg border border-gray-200">
-        <h4 className="font-medium mb-3">투자 지표</h4>
-        <div className="grid grid-cols-5 gap-2 text-center">
-          <div>
-            <div className="text-xs text-gray-500 mb-1">시가총액</div>
-            <div className="font-medium">27.3조원</div>
+      <div className="bg-white p-4 rounded-lg border border-gray-200 space-y-4">
+        <h4 className="font-medium">투자 지표</h4>
+        <div className="grid grid-cols-5 gap-3 text-center">
+          <div className="space-y-2">
+            <div className="text-xs text-gray-500">시가총액</div>
+            <div className="font-medium text-sm">27.3조원</div>
           </div>
-          <div>
-            <div className="text-xs text-gray-500 mb-1">PBR</div>
-            <div className="font-medium">0.6배</div>
+          <div className="space-y-2">
+            <div className="text-xs text-gray-500">PBR</div>
+            <div className="font-medium text-sm">0.6배</div>
           </div>
-          <div>
-            <div className="text-xs text-gray-500 mb-1">PER</div>
-            <div className="font-medium">6.6배</div>
+          <div className="space-y-2">
+            <div className="text-xs text-gray-500">PER</div>
+            <div className="font-medium text-sm">6.6배</div>
           </div>
-          <div>
-            <div className="text-xs text-gray-500 mb-1">PSR</div>
-            <div className="font-medium">0.5배</div>
+          <div className="space-y-2">
+            <div className="text-xs text-gray-500">PSR</div>
+            <div className="font-medium text-sm">0.5배</div>
           </div>
-          <div>
-            <div className="text-xs text-gray-500 mb-1">ROE</div>
-            <div className="font-medium">9.6%</div>
+          <div className="space-y-2">
+            <div className="text-xs text-gray-500">ROE</div>
+            <div className="font-medium text-sm">9.6%</div>
           </div>
         </div>
       </div>
@@ -261,35 +245,34 @@ export function ResultsPanel({
   )
 
   const renderNewsContent = () => (
-    <div className="space-y-4">
-      <h3 className="font-semibold text-base mb-2">최근 주요 뉴스</h3>
+    <div className="space-y-6">
+      <h3 className="font-semibold text-base">최근 주요 뉴스</h3>
       
-      <div className="space-y-4">
-        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
-          <div className="font-medium text-sm">알테오젠 2대주주 형인우 "키트루다SC 판매가 천기... 코스피 이전 긍정적"</div>
-          <div className="text-xs text-gray-600 mt-1">월 대표는 알테오젠 주식 27만주를 보유한 2대 주주다. 그의 보유분 액면분할시는 162만주로 보유하고 있다. 2위의 주식 가치는 지난 4일 종가 기준으로 1조...</div>
-          <div className="text-xs text-gray-500 mt-2">데일리안 • 3주 전</div>
+      <div className="space-y-5">
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-4 rounded-r-lg space-y-3">
+          <SmartTooltipText className="font-medium text-sm leading-relaxed">알테오젠 2대주주 형인우 "키트루다SC 판매가 천기... 코스피 이전 긍정적"</SmartTooltipText>
+          <SmartTooltipText className="text-xs text-gray-600 leading-relaxed">월 대표는 알테오젠 주식 27만주를 보유한 2대 주주다. 그의 보유분 액면분할시는 162만주로 보유하고 있다. 2위의 주식 가치는 지난 4일 종가 기준으로 1조...</SmartTooltipText>
+          <div className="text-xs text-gray-500">데일리안 • 3주 전</div>
         </div>
 
-        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
-          <div className="font-medium text-sm">알테오젠, 코스피 이전 기대감에 다시 '들썩'... 5%대 상승 [Why 바이오]</div>
-          <div className="text-xs text-gray-600 mt-1">이 곳사는 LG생명과학, 알테바이오젠테스 등에서 24년 이상 근무하며 FDA와 EMA로부터 총 7건의 승인 면역에 바이오시밀러 허가를 이끈 CMC 전문가다.</div>
-          <div className="text-xs text-gray-500 mt-2">머니투데이 • 3주 전</div>
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-4 rounded-r-lg space-y-3">
+          <SmartTooltipText className="font-medium text-sm leading-relaxed">알테오젠, 코스피 이전 기대감에 다시 '들썩'... 5%대 상승 [Why 바이오]</SmartTooltipText>
+          <SmartTooltipText className="text-xs text-gray-600 leading-relaxed">이 곳사는 LG생명과학, 알테바이오젠테스 등에서 24년 이상 근무하며 FDA와 EMA로부터 총 7건의 승인 면역에 바이오시밀러 허가를 이끈 CMC 전문가다.</SmartTooltipText>
+          <div className="text-xs text-gray-500">머니투데이 • 3주 전</div>
         </div>
 
-        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
-          <div className="font-medium text-sm">"코스닥 1위가 대전 회사?"알테오젠이 증명한 '한국 경제 지각변동'</div>
-          <div className="text-xs text-gray-600 mt-1">"코스닥 시총 1위 알테오젠 본사가 대전?" 대전 주식도 단연 대전의 알테오젠이다. 7월 2일 기준, 어려워 코스닥 시가총액 1위인 알테오젠은 시총 21...</div>
-          <div className="text-xs text-gray-500 mt-2">뉴스타파 • 3주 전</div>
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-4 rounded-r-lg space-y-3">
+          <SmartTooltipText className="font-medium text-sm leading-relaxed">"코스닥 1위가 대전 회사?"알테오젠이 증명한 '한국 경제 지각변동'</SmartTooltipText>
+          <SmartTooltipText className="text-xs text-gray-600 leading-relaxed">"코스닥 시총 1위 알테오젠 본사가 대전?" 대전 주식도 단연 대전의 알테오젠이다. 7월 2일 기준, 어려워 코스닥 시가총액 1위인 알테오젠은 시총 21...</SmartTooltipText>
+          <div className="text-xs text-gray-500">뉴스타파 • 3주 전</div>
         </div>
 
-        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-3 rounded-r-lg">
-          <div className="font-medium text-sm">알테오젠 'ALT-B4' 폭 물질특허 등록... 특허소송에 미치는 영향은</div>
-          <div className="text-xs text-gray-600 mt-1">알테오젠(196170)과 바하마스 선박 회사무브리다의 'ALT-B4'의 물질 특허가 미국 특허청(USPTO) 등록이 결정되다 알테오젠 보사 및 연구소 전략...</div>
-          <div className="text-xs text-gray-500 mt-2">데일리안 • 3주 전</div>
+        <div className="border-l-4 border-primary pl-4 bg-primary-foreground p-4 rounded-r-lg space-y-3">
+          <SmartTooltipText className="font-medium text-sm leading-relaxed">알테오젠 'ALT-B4' 폭 물질특허 등록... 특허소송에 미치는 영향은</SmartTooltipText>
+          <SmartTooltipText className="text-xs text-gray-600 leading-relaxed">알테오젠(196170)과 바하마스 선박 회사무브리다의 'ALT-B4'의 물질 특허가 미국 특허청(USPTO) 등록이 결정되다 알테오젠 보사 및 연구소 전략...</SmartTooltipText>
+          <div className="text-xs text-gray-500">데일리안 • 3주 전</div>
         </div>
       </div>
-
     </div>
   )
 
@@ -314,16 +297,16 @@ export function ResultsPanel({
         </motion.div>
       </DrawerTrigger>
       
-      <DrawerContent className="h-[80vh]">
-        <DrawerHeader>
+      <DrawerContent className="h-[80vh] flex flex-col">
+        <DrawerHeader className="flex-shrink-0">
           <DrawerTitle className="text-center text-lg font-semibold">
             {MOCK_STOCK_DATA.company.name} 검색 결과
           </DrawerTitle>
         </DrawerHeader>
         
-        <div className="px-6 pb-6 flex-1 flex flex-col">
+        <div className="px-6 pb-6 flex-1 flex flex-col min-h-0">
           {/* Category tabs */}
-          <div className="flex bg-gray-100 rounded-full p-1 mb-4">
+          <div className="flex bg-gray-100 rounded-full p-1 mb-4 flex-shrink-0">
             {RESULT_TABS.map((tab) => (
               <Button
                 key={tab}
@@ -342,7 +325,7 @@ export function ResultsPanel({
           </div>
 
           {/* Content area */}
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-y-auto min-h-0">
             <div className="text-gray-800 text-sm">
               {selectedTab === "기술" && renderTechnicalContent()}
               {selectedTab === "재무" && renderFinancialContent()}
