@@ -2,8 +2,8 @@ import { MobileLayout } from '@/components/layout/MobileLayout';
 
 export default function Home() {
   return (
-    <MobileLayout type="home">
-      Home
+    <MobileLayout type="back">
+      Industry
     </MobileLayout>
   );
 }
