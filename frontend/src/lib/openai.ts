@@ -39,7 +39,7 @@ export async function extractTechKeywords(companyInfo: CompanyInfo): Promise<str
 
 요구사항:
 1. 바이오/제약/의료 분야의 핵심 기술 용어로 추출
-2. 영어로 표기 (예: CAR-T, mRNA, Immunotherapy)
+2. 한국어로 표기
 3. 정확히 3개만 추출
 4. 각 키워드는 10자 이내로 간결하게
 5. 쉼표(,)로 구분하여 응답
