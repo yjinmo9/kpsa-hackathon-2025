@@ -13,7 +13,7 @@ interface SearchMutationVariables {
 
 
 // Constants and utility functions defined at the top
-const SEARCH_API_URL = '/api/search'
+const SEARCH_API_URL = '/api/stock'
 
 const createSearchUrl = (query?: string): string => {
   const url = new URL(SEARCH_API_URL, window.location.origin)
@@ -41,7 +41,7 @@ const searchFetcher = async (url: string): Promise<SearchResponse> => {
 export function useSearchQuery() {
   return useMutation<SearchResponse, Error, SearchMutationVariables>({
     mutationFn: async ({ query }) => {
-      const res = await axios.post("/api/search", { query })
+      const res = await axios.get("/api/stock", { params: { query } })
       return res.data
     },
     retry: 1,
