@@ -1,5 +1,6 @@
 "use client"
 
+import { ArrowLeftIcon } from "lucide-react";
 import { useParams, useRouter } from "next/navigation"
 
 const OPTIONS = [
@@ -119,7 +120,12 @@ export default function CompanyTypeDetailPage() {
   if (!valid) return <div className="p-8">잘못된 접근입니다.</div>
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-2 pt-0">
+    <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center p-2 pt-2">
+      <div className="flex items-center justify-start w-full">
+        <button onClick={() => router.back()}>
+            <ArrowLeftIcon className="w-6 h-6" />
+          </button>
+      </div>
       <div className="w-full max-w-[380px] mt-0 mb-2 overflow-x-auto">
       <div className="w-full max-w-[380px] mt-0 mb-2 overflow-x-auto">
         <h1

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { ArrowLeftIcon } from "lucide-react";
 
 const OPTIONS = [
   "신약 개발 성공 기대하며 성장에 투자하고 싶어요.",
@@ -24,7 +25,12 @@ export default function CompanySelectPage() {
   }
 
   return (
-    <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center justify-center p-2 pt-0">
+    <div className="min-h-[100dvh] bg-gray-50 flex flex-col items-center p-2 pt-2">
+      <div className="flex items-center justify-start w-full">
+        <button onClick={() => router.back()}>
+            <ArrowLeftIcon className="w-6 h-6" />
+          </button>
+      </div>
       <h1 className="h-[50px] flex items-end justify-end text-2xl font-bold mb-8 mt-8 text-center max-w-[375px]">맞춤형 기업 유형 찾기</h1>
       <p className="text-base text-gray-600 mb-8 text-center max-w-[375px]">
       나에게 잘 맞는 유형을 찾아보세요!
