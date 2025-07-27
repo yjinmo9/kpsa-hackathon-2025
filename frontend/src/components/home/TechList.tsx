@@ -10,6 +10,7 @@ interface TechItem {
   category: string
   subtitle: string
   description: string
+  route: string
 }
 
 interface TechCategory {
@@ -22,8 +23,9 @@ interface TechListProps {
 }
 
 function TechCard({ item }: { item: TechItem }) {
+  console.log("🚀 ~ TechCard ~ item:", item)
   return (
-      <Link href={`/adc`} className="flex flex-col gap-2">
+      <Link href={item.route} className="flex flex-col gap-2">
         <h2 className="text-sm font-semibold text-black leading-tight">{item.category}</h2>
       <Card className="mb-4 transition-all duration-200 border-none shadow-none border-black rounded-lg bg-gray-200">
         <CardHeader className="pb-1">
