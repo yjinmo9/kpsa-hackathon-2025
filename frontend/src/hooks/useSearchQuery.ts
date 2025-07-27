@@ -2,31 +2,41 @@ import { useMutation, UseMutationResult } from '@tanstack/react-query'
 
 import axios from "axios";
 
+// 새로운 API 응답 타입
 interface SearchResponse {
-  company: string
-  technology: string[]
+  type: 'abouttech'
+  data: {
+    company: string
+    industry: string
+    pipeline: string
+    products: string
+    tech_codes: string
+    advantage: string
+    summary: string
+    abouttech: string[]
+  }
 }
 
 interface SearchMutationVariables {
   query: string
 }
 
-
-// Constants and utility functions defined at the top
-const SEARCH_API_URL = '/api/stock'
+// Constants and utility functions updated for new API
+const SEARCH_API_URL = '/api/search'
 
 const createSearchUrl = (query?: string): string => {
   const url = new URL(SEARCH_API_URL, window.location.origin)
-  
-  if (query) {
-    url.searchParams.set('q', query)
-  }
-  
   return url.toString()
 }
 
-const searchFetcher = async (url: string): Promise<SearchResponse> => {
-  const response = await fetch(url)
+const searchFetcher = async (url: string, query: string): Promise<SearchResponse> => {
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query })
+  })
   
   if (!response.ok) {
     throw new Error(`Failed to fetch search data: ${response.statusText}`)
@@ -36,12 +46,12 @@ const searchFetcher = async (url: string): Promise<SearchResponse> => {
 }
 
 /**
- * Custom hook to perform search mutation
+ * Custom hook to perform search mutation using the new API
  */
 export function useSearchQuery() {
   return useMutation<SearchResponse, Error, SearchMutationVariables>({
     mutationFn: async ({ query }) => {
-      const res = await axios.get("/api/stock", { params: { query } })
+      const res = await axios.post("/api/search", { query })
       return res.data
     },
     retry: 1,
@@ -54,8 +64,7 @@ export function useSearchQuery() {
 export function useBasicSearchQuery(): UseMutationResult<SearchResponse, Error, void> {
   return useMutation({
     mutationFn: async (): Promise<SearchResponse> => {
-      const url = createSearchUrl()
-      return searchFetcher(url)
+      throw new Error('Basic search requires a query parameter')
     },
     retry: 1,
   })

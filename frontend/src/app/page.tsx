@@ -14,6 +14,7 @@ import {
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { useSearchQuery } from "@/hooks"
 import { useRouter } from "next/navigation"
+import { ApiSearchData } from "@/components/home/SearchResults"
 
 interface SearchFormData {
   query: string
@@ -85,10 +86,11 @@ export default function BuyoSearchPage() {
               {!showResults ? (
                 <SearchInterface
                   onSubmit={handleSubmit(onSubmit)}
+                  isLoading={searchMutation.isPending}
                 />
               ) : (
                 <SearchResults
-                  searchData={searchMutation.data}
+                  searchData={searchMutation.data as ApiSearchData}
                   selectedResultTab={selectedResultTab}
                   onResultTabChange={setSelectedResultTab}
                 />

@@ -2,27 +2,18 @@
 
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
-import { Search } from "lucide-react"
+import { Search, Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { motion, AnimatePresence } from "framer-motion"
 import { useFormContext } from "react-hook-form"
+import { bioCompanies } from "@/config/bioCompanies"
 
 interface SearchInterfaceProps {
   onSubmit: (e: React.FormEvent) => void
+  isLoading?: boolean
 }
 
-const bioCompanies = [
-  "삼성바이오로직스",
-  "셀트리온", 
-  "알테오젠",
-  "유한양행",
-  "리가켐바이오",
-  "에이비엘바이오",
-  "녹십자",
-  "앱클론",
-  "파마리서치",
-  "종근당바이오"
-]
+
 
 // 한글 초성 추출 함수
 const getInitialConsonants = (text: string): string => {
@@ -69,7 +60,8 @@ const isMatchingQuery = (company: string, query: string): boolean => {
 }
 
 export function SearchInterface({ 
-  onSubmit 
+  onSubmit,
+  isLoading = false
 }: SearchInterfaceProps) {
   const { register, setValue, watch } = useFormContext()
   const [isFocused, setIsFocused] = useState(false)
@@ -108,6 +100,115 @@ export function SearchInterface({
   }
 
   const { onChange, onBlur, name, ref } = register("query")
+
+  // 로딩 상태일 때 보여줄 컴포넌트
+  if (isLoading) {
+    return (
+      <motion.div
+        key="loading"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative flex flex-col items-center justify-center h-full w-full"
+      >
+        {/* Background circles with enhanced animation for loading */}
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] rounded-full"
+            style={{ backgroundColor: 'rgba(172, 204, 96, 0.3)' }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full"
+            style={{ backgroundColor: 'rgba(172, 204, 96, 0.4)' }}
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.4, 0.7, 0.4],
+            }}
+            transition={{
+              duration: 2.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.5,
+            }}
+          />
+          <motion.div 
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[24rem] h-[24rem] rounded-full"
+            style={{ backgroundColor: 'rgba(172, 204, 96, 0.5)' }}
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1,
+            }}
+          />
+        </div>
+
+        <div className="relative z-10 w-full max-w-sm px-6 space-y-8">
+          <motion.div
+            className="text-center space-y-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="mx-auto w-12 h-12 flex items-center justify-center"
+            >
+              <Loader2 className="w-8 h-8 text-green-500" />
+            </motion.div>
+            
+            <motion.h2 
+              className="text-lg font-medium text-gray-800 leading-relaxed"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            >
+              검색 중입니다...
+            </motion.h2>
+            
+            <motion.p 
+              className="text-sm text-gray-600"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              바이오 정보를 분석하고 있어요
+            </motion.p>
+          </motion.div>
+
+          {/* 로딩 중에도 검색창 표시 (비활성화) */}
+          <motion.div
+            className="relative opacity-50 pointer-events-none"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 0.5, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 z-20" />
+            <Input
+              type="text"
+              value={currentQuery}
+              disabled
+              className="w-full bg-white border-none text-gray-800 placeholder-gray-500 pl-12 py-4 rounded-full shadow-sm text-base relative z-10"
+            />
+          </motion.div>
+        </div>
+      </motion.div>
+    )
+  }
 
   return (
     <motion.div

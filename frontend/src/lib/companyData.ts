@@ -53,6 +53,8 @@ export interface CompanyData {
   }
 }
 
+// COMPANY_DATA를 임시로 주석처리
+/*
 export const COMPANY_DATA: Record<string, CompanyData> = {
   "삼성바이오로직스": {
     company: {
@@ -983,4 +985,23 @@ export const COMPANY_DATA: Record<string, CompanyData> = {
       }
     }
   }
+}
+*/
+
+// 프리미엄 구독이 필요한 회사들 (PDF 처리 가능한 회사들)
+export const PREMIUM_COMPANIES = [
+  "삼성바이오로직스",
+  "셀트리온", 
+  "알테오젠",
+  "유한양행",
+  "리가켐바이오",
+  "에이비엘바이오",
+  "녹십자",
+  "앱클론",
+  "파마리서치",
+  "종근당바이오"
+]
+
+export const isPremiumCompany = (companyName: string): boolean => {
+  return PREMIUM_COMPANIES.includes(companyName)
 }

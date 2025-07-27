@@ -16,6 +16,78 @@ export interface AIAnalysisResponse {
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH';
 }
 
+export interface CompanyInfo {
+  company: string;
+  industry: string;
+  pipeline: string;
+  products: string;
+  advantage: string;
+  summary: string;
+}
+
+export async function extractTechKeywords(companyInfo: CompanyInfo): Promise<string[]> {
+  try {
+    const prompt = `
+다음 회사 정보를 분석하여 핵심 기술 키워드 3개를 추출해주세요.
+
+회사명: ${companyInfo.company}
+산업분야: ${companyInfo.industry}
+파이프라인: ${companyInfo.pipeline}
+제품: ${companyInfo.products}
+경쟁우위: ${companyInfo.advantage}
+요약: ${companyInfo.summary}
+
+요구사항:
+1. 바이오/제약/의료 분야의 핵심 기술 용어로 추출
+2. 영어로 표기 (예: CAR-T, mRNA, Immunotherapy)
+3. 정확히 3개만 추출
+4. 각 키워드는 10자 이내로 간결하게
+5. 쉼표(,)로 구분하여 응답
+
+응답 형식: keyword1, keyword2, keyword3
+`;
+
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        {
+          role: 'system',
+          content: '당신은 바이오/제약 기술 전문가입니다. 회사 정보를 분석하여 핵심 기술 키워드를 정확하게 추출합니다.'
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      max_tokens: 100,
+      temperature: 0.3,
+    });
+
+    const content = response.choices[0]?.message?.content || '';
+    
+    // Parse keywords from the response
+    const keywords = content
+      .split(',')
+      .map(keyword => keyword.trim())
+      .filter(keyword => keyword.length > 0)
+      .slice(0, 3); // Ensure only 3 keywords
+    
+    // Fallback keywords if extraction fails
+    if (keywords.length < 3) {
+      const fallbackKeywords = ['Biotechnology', 'Drug Development', 'Healthcare'];
+      while (keywords.length < 3) {
+        keywords.push(fallbackKeywords[keywords.length]);
+      }
+    }
+    
+    return keywords;
+  } catch (error) {
+    console.error('Tech keyword extraction error:', error);
+    // Return default keywords if API fails
+    return ['Biotechnology', 'Drug Development', 'Healthcare'];
+  }
+}
+
 export async function getKoreanAnalysis(request: AIAnalysisRequest): Promise<AIAnalysisResponse> {
   try {
     const prompt = `

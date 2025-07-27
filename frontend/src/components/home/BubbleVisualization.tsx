@@ -2,11 +2,10 @@
 
 import { motion } from "framer-motion"
 import { useMemo, useState } from "react"
-import { BubbleData, SearchData } from "./SearchResults"
-import { COMPANY_DATA } from "@/lib/companyData"
+import { BubbleData, ApiSearchData } from "./SearchResults"
 
 interface BubbleVisualizationProps {
-  searchData: SearchData | undefined
+  searchData: ApiSearchData | undefined
 }
 
 const BACKGROUND_FADE_DURATION_MS = 800;
@@ -30,14 +29,16 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
   const [isInteractive, setIsInteractive] = useState(false);
   
   const bubbleData: BubbleData[] = useMemo(() => {
-    if (!searchData) return []
+    if (!searchData?.data) return []
 
     const bubbles: BubbleData[] = []
+    const { data } = searchData
     
-    if (searchData.company) {
+    // 회사명을 중앙 버블로 추가
+    if (data.company) {
       bubbles.push({
         id: 0,
-        text: searchData.company,
+        text: data.company,
         size: 150, 
         x: 0, 
         y: 0, 
@@ -45,9 +46,10 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
       })
     }
 
-    if (searchData.technology && searchData.technology.length > 0) {
-      const techCount = searchData.technology.length
-      const radius = 120 
+    // 기술들을 주변 버블로 추가
+    if (data.abouttech && data.abouttech.length > 0) {
+      const techCount = data.abouttech.length
+      const radius = 120
       const upwardOffset = -250 // 전체적으로 위로 올리는 오프셋
       const leftOffset = -60 // 전체적으로 왼쪽으로 이동하는 오프셋
       const gradients = [
@@ -61,7 +63,7 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
         "bg-gradient-to-br from-red-400 to-pink-500"
       ]
       
-      searchData.technology.forEach((tech, index) => {
+      data.abouttech.forEach((tech, index) => {
         const angle = (index * 2 * Math.PI) / techCount
         const x = Math.cos(angle) * radius + leftOffset // 왼쪽으로 이동하는 오프셋 적용
         const y = Math.sin(angle) * radius + upwardOffset // 위로 올리는 오프셋 적용
@@ -111,15 +113,14 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
       onMouseLeave={() => setIsInteractive(false)}
     >
       <div className="relative w-96 h-96">
-        {/* 주식 가격 정보 */}
-        <motion.div 
+        {/* 회사 정보 */}
+        {/* <motion.div 
           className="flex gap-1 absolute right-[10%] bottom-[20%] z-20"
           animate={{ y: isInteractive ? [-2, 2, -2] : 0 }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="">{COMPANY_DATA[searchData?.company || '']?.company.price}</span>
-          <span className="text-blue-500">{COMPANY_DATA[searchData?.company || '']?.company.change}</span>
-        </motion.div>
+          <span className="text-sm text-gray-600">{searchData?.data.company}</span>
+        </motion.div> */}
 
         {/* Background Circle with enhanced animation */}
         <motion.div
@@ -131,11 +132,11 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
               ? "0 0 50px rgba(59, 130, 246, 0.3)" 
               : "0 0 20px rgba(59, 130, 246, 0.1)"
           }}
-          transition={{
-            duration: BACKGROUND_FADE_DURATION_MS / 1000,
-            ease: "easeOut"
+          transition={{ duration: BACKGROUND_FADE_DURATION_MS / 1000 }}
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-50 to-purple-50 backdrop-blur-sm"
+          style={{
+            background: `radial-gradient(circle at 30% 30%, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.05))`
           }}
-          className="absolute inset-0 rounded-full border-2 border-gray-200/30 bg-gradient-to-br from-blue-50/30 to-purple-50/20 backdrop-blur-sm"
         />
 
         {/* Animated background rings */}
