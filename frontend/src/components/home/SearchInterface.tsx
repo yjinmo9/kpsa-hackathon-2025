@@ -23,19 +23,51 @@ export function SearchInterface({
       transition={{ duration: 0.4 }}
       className="relative flex flex-col items-center justify-center h-full w-full"
     >
-      {/* Background circles */}
+      {/* Background circles with wave animation */}
       <div className="absolute inset-0 overflow-hidden">
-        <div 
+        <motion.div 
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[32rem] h-[32rem] rounded-full"
           style={{ backgroundColor: 'rgba(172, 204, 96, 0.4)' }}
+          animate={{
+            scale: [1, 1.1, 1],
+            x: [0, 20, 0],
+            y: [0, -15, 0],
+          }}
+          transition={{
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         />
-        <div 
+        <motion.div 
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] rounded-full"
           style={{ backgroundColor: 'rgba(172, 204, 96, 0.6)' }}
+          animate={{
+            scale: [1, 1.15, 1],
+            x: [0, -25, 0],
+            y: [0, 20, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
         />
-        <div 
+        <motion.div 
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[24rem] h-[24rem] rounded-full"
           style={{ backgroundColor: 'rgba(172, 204, 96, 0.8)' }}
+          animate={{
+            scale: [1, 1.08, 1],
+            x: [0, 15, 0],
+            y: [0, 25, 0],
+          }}
+          transition={{
+            duration: 7,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2,
+          }}
         />
       </div>
 
