@@ -93,6 +93,7 @@ export function SearchInterface({
           <Input
             type="text"
             placeholder="종목명, 기술명을 검색해보세요"
+            autoComplete="off"
             {...register("query")}
             className="w-full bg-white border-none text-gray-800 placeholder-gray-500 pl-12 py-4 rounded-full shadow-sm focus:ring-2 focus:ring-green-300 focus:border-transparent text-base"
           />
