@@ -12,6 +12,7 @@ import {
 } from "@/components/home"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { useSearchQuery } from "@/hooks"
+import { useRouter } from "next/navigation"
 
 interface SearchFormData {
   query: string
@@ -23,6 +24,7 @@ export default function BuyoSearchPage() {
   const [showResults, setShowResults] = useState(false)
 
   const searchMutation = useSearchQuery()
+  const router = useRouter()
   
   const methods = useForm<SearchFormData>({
     defaultValues: {
@@ -55,6 +57,10 @@ export default function BuyoSearchPage() {
   }
 
   const handleTabChange = (tab: string) => {
+    if (tab === "기업") {
+      router.push("/company-select")
+      return
+    }
     setActiveTab(tab)
     // 탭 변경 시 검색 결과 숨기고 초기화
     setShowResults(false)
