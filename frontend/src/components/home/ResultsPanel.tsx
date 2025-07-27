@@ -141,7 +141,7 @@ export function ResultsPanel({
   onTabChange, 
   isOpen = true, 
   onOpenChange 
-}: ResultsPanelProps) {
+}: any) {
   const [internalOpen, setInternalOpen] = useState(isOpen)
   const [email, setEmail] = useState("")
   const [isEmailInputOpen, setIsEmailInputOpen] = useState(false)
