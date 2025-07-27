@@ -138,6 +138,7 @@ export function SearchResults({
         techData={techData}
         isLoading={isLoading}
         onGenerateReport={generateReport}
+        searchedCompany={searchData?.company}
       />
     </motion.div>
   )

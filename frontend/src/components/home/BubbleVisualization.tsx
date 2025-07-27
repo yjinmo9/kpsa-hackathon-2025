@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { useMemo, useState } from "react"
 import { BubbleData, SearchData } from "./SearchResults"
+import { COMPANY_DATA } from "@/lib/companyData"
 
 interface BubbleVisualizationProps {
   searchData: SearchData | undefined
@@ -116,8 +117,8 @@ export function BubbleVisualization({ searchData }: BubbleVisualizationProps) {
           animate={{ y: isInteractive ? [-2, 2, -2] : 0 }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
-          <span className="">462,000</span>
-          <span className="text-blue-500">-3.14%</span>
+          <span className="">{COMPANY_DATA[searchData?.company || '']?.company.price}</span>
+          <span className="text-blue-500">{COMPANY_DATA[searchData?.company || '']?.company.change}</span>
         </motion.div>
 
         {/* Background Circle with enhanced animation */}
