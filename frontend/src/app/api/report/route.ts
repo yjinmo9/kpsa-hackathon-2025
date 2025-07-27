@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const WEBHOOK_URL = "https://clcl6084local.app.n8n.cloud/webhook-test/b9fcf34e-5752-414d-b422-a74d8a2122e9";
+const WEBHOOK_URL = "https://clcl6084local.app.n8n.cloud/webhook-test/750e13e8-8226-4f24-a9da-2379df806641";
 
-export async function GET(req: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    // URL에서 이메일 파라미터 추출
-    const { searchParams } = new URL(req.url);
-    const email = searchParams.get('email');
+    // 요청 body에서 이메일과 회사명 추출
+    const body = await req.json();
+    const { email, name } = body;
     
     if (!email) {
       return NextResponse.json(
-        { error: 'Email parameter is required' }, 
+        { error: 'Email is required in request body' }, 
+        { status: 400 }
+      );
+    }
+
+    if (!name) {
+      return NextResponse.json(
+        { error: 'Company name is required in request body' }, 
         { status: 400 }
       );
     }
@@ -24,18 +31,27 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // 웹훅에 이메일 파라미터와 함께 요청
-    const webhookUrl = `${WEBHOOK_URL}?email=${encodeURIComponent(email)}`;
-    
-    const response = await fetch(webhookUrl, {
-      method: 'GET',
+    // 웹훅에 POST 요청으로 이메일, 회사명 전송
+    const response = await fetch(WEBHOOK_URL, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({ email, name }),
     });
-
+    
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      console.error(`Webhook error: ${response.status} ${response.statusText}`, errorText);
+      
+      return NextResponse.json(
+        { 
+          error: 'Webhook request failed',
+          details: `${response.status} ${response.statusText}`,
+          webhookUrl: WEBHOOK_URL
+        }, 
+        { status: 502 }
+      );
     }
 
     const data = await response.json();
