@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import {
   Drawer,
   DrawerContent,
@@ -142,10 +143,50 @@ export function ResultsPanel({
   onOpenChange 
 }: ResultsPanelProps) {
   const [internalOpen, setInternalOpen] = useState(isOpen)
+  const [email, setEmail] = useState("")
+  const [isEmailInputOpen, setIsEmailInputOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [reportSuccess, setReportSuccess] = useState(false)
   
   const handleOpenChange = (open: boolean) => {
     setInternalOpen(open)
     onOpenChange?.(open)
+  }
+
+  const handleReportRequest = async () => {
+    if (!email.trim()) {
+      setIsEmailInputOpen(true)
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      const response = await fetch(`/api/report?email=${encodeURIComponent(email)}`)
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to request report')
+      }
+
+      setReportSuccess(true)
+      setIsEmailInputOpen(false)
+      
+      // 3초 후 성공 메시지 숨기기
+      setTimeout(() => {
+        setReportSuccess(false)
+      }, 3000)
+      
+    } catch (error) {
+      console.error('Report request failed:', error)
+      alert('레포트 요청에 실패했습니다. 다시 시도해주세요.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    handleReportRequest()
   }
 
   const renderTechnicalContent = () => (
@@ -199,6 +240,7 @@ export function ResultsPanel({
         </div>
         <SmartTooltipText className="text-sm text-green-700 leading-relaxed">면역세포를 특정 질병을 정확히 인식하고 치료하도록 돕는 기술</SmartTooltipText>
       </div>
+
     </div>
   )
 
@@ -241,6 +283,7 @@ export function ResultsPanel({
           </div>
         </div>
       </div>
+
     </div>
   )
 
@@ -273,6 +316,7 @@ export function ResultsPanel({
           <div className="text-xs text-gray-500">데일리안 • 3주 전</div>
         </div>
       </div>
+
     </div>
   )
 
@@ -305,6 +349,64 @@ export function ResultsPanel({
         </DrawerHeader>
         
         <div className="px-6 pb-6 flex-1 flex flex-col min-h-0">
+          {/* 레포트 요청 섹션 */}
+          <div className="bg-blue-50 p-4 rounded-lg space-y-3 mb-4 flex-shrink-0 border border-blue-200">
+            <div className="flex items-center gap-2">
+              <h4 className="font-medium text-blue-800">📧 상세 분석 레포트</h4>
+            </div>
+            <SmartTooltipText className="text-sm text-blue-700">
+              {`이메일로 ${MOCK_STOCK_DATA.company.name}의 상세 분석 레포트를 받아보세요`}
+            </SmartTooltipText>
+            
+            {reportSuccess ? (
+              <div className="bg-green-100 text-green-800 p-3 rounded-lg text-sm text-center font-medium">
+                ✓ 레포트 요청이 완료되었습니다. 이메일을 확인해주세요!
+              </div>
+            ) : (
+              <>
+                {isEmailInputOpen ? (
+                  <form onSubmit={handleEmailSubmit} className="space-y-3">
+                    <Input
+                      type="email"
+                      placeholder="이메일 주소를 입력하세요"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full"
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <Button 
+                        type="submit" 
+                        size="sm" 
+                        className="flex-1"
+                        disabled={isLoading || !email.trim()}
+                      >
+                        {isLoading ? "전송 중..." : "레포트 요청"}
+                      </Button>
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => setIsEmailInputOpen(false)}
+                      >
+                        취소
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <Button 
+                    onClick={() => setIsEmailInputOpen(true)}
+                    size="sm" 
+                    className="w-full"
+                    variant="outline"
+                  >
+                    📧 상세 분석 레포트 받기
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+
           {/* Category tabs */}
           <div className="flex bg-gray-100 rounded-full p-1 mb-4 flex-shrink-0">
             {RESULT_TABS.map((tab) => (
