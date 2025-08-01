@@ -10,9 +10,9 @@
 
 ## 프로젝트 개요
 
-- **진행 기간**: 2025.07 (1주)
-- **기술 스택**: Next.js, JavaScript, OpenAI API, Pinecone (LangChain 미사용)
-- **역할**: 프론트엔드/AI 파트 전반 설계 및 개발
+- **진행 기간**: 2025.07.26~27
+- **기술 스택**: Next.js, JavaScript, OpenAI API, Pinecone 
+- **역할**: 백엔드 / RAG 파트 전반 설계 및 개발
 - **폴더 구조**: 모든 핵심 기능은 `frontend/` 디렉토리에 직접 구현  
   (→ pages/api/로 벡터 검색+요약 API, components/에 주요 UI, lib/에 OpenAI/Pinecone 유틸 직접 작성)
 
