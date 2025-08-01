@@ -8,7 +8,7 @@
 
 ---
 
-## 🧩 프로젝트 개요
+## 프로젝트 개요
 
 - **진행 기간**: 2025.07 (1주)
 - **기술 스택**: Next.js, JavaScript, OpenAI API, Pinecone (LangChain 미사용)
